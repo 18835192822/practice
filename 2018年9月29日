@@ -1,0 +1,78 @@
+1.将一个目录改造为git仓库
+git init	在该目录下执行
+2.将一个文件添加进暂存区
+git add ${path}
+3.提交一个文件至当前分支（默认为master）
+git commit -m "描述信息"
+4.查看最近的commit日志
+git log
+添加--pretty=oneline参数可以只显示精简信息
+git log --pretty=oneline
+5.版本变更
+git reset --hard 1094a	后边的版本号只用输入5位即可，
+主要用于撤销add或commit的操作，也就是对stage和repository回退操作
+
+6.查询历史命令
+git reflog
+7.查询当前目录下所有文件的更改状态，包括修改未添加进stage、添加未commit进repository
+git status
+
+Changes not staged for commit:	下边会列出所有修改过但是未add进stage的文件
+Changes to be committed:	下边会列出所有在stage中但是还没有commit到repository的文件
+Unmerged paths:			下边会列出未合并的文件
+
+8.撤销修改
+git checkout -- readme.txt
+主要用于撤销工作区的变更。
+命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+
+一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+
+一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+
+总之，就是让这个文件回到最近一次git commit或git add时的状态。
+
+9.删除文件
+如果要在一个git仓库里删除一个文件，需要
+rm a.txt	现在工作区将此文件删除
+git rm a.txt	再将stage中的文件删除
+git commit -m "remove file"	最后提交至repository
+
+只要这个文件还没有执行最后一步commit，都可以通过reset恢复。
+
+10.创建分支
+git branch dev
+11.切换分支
+git checkout dev
+12.创建并切换分支
+git checkout -b dev
+13.查看本地所有分支
+git branch
+14.合并分支
+git merge dev
+用于合并指定分支到当前分支
+15.删除分支
+git branch -d dev	如果此分支没有被合并，那么默认是不可以被删除的，如果要强行删除，加-d参数改为-D参数
+16.暂时存储
+git stash
+要了解此命令需要先明白几个特性，git中，工作区与stage区都是共享的，与当前处于哪个分支无关，而repository是分支独有的，每个分支上的内容可以不同。
+此命令是将工作区和stage区中的内容先保存在一个独立的堆栈中，这个堆栈是所有分支共享的，也就是说所有分支都可以在这个堆栈中保存临时改动，但是各个保存
+
+起来的变动都是相互独立的，互不影响，比如：在master中修改了a.txt文件，然后保存，再在dev分支中修改a.txt，再次保存，这两次保存之间互不干扰，如果还原
+
+其中一个的话，只会还原那个改动，而不会影响到另一个改动。
+此外，stash还有一些特性，比如：对一个文件修改后未add，直接stash，那么stash pop后这个文件还是未add状态，如果此文件修改后add到stage，那么stash、
+
+stash pop之后，这个文件将会回到工作区而不是暂存区。但是如果是新增一个文件，那么stash和stash pop之后，这个文件会回到他原来所处的区域。
+17.暂时存储恢复
+有两种方式：1.git stash pop 恢复后堆栈区删除保存记录  2.git stash apply  恢复后堆栈区保留此条信息，需要使用git stash drop删除堆栈内的记录
+18.查看远程仓库信息
+git remote -v
+19.推送本地修改
+git push origin branch-name
+20.在本地创建于远程分支对应的分支
+git checkout -b branch-name origin/branch-name
+21.从远程仓库抓取
+git pull origin branch-name  也可以使用git pull   但是前提是要将本地分支与远程分支建立连接
+22.将本地分支与远程分支建立连接
+git branch --set-upstream branch-name origin/branch-name
