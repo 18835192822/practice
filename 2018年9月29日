@@ -71,7 +71,7 @@ git remote -v
 19.推送本地修改
 git push origin branch-name
 20.在本地创建于远程分支对应的分支
-git checkout -b branch-name origin/branch-name
+git checkout -b branch-name origin/branch-name    之前最好先git pull一次
 21.从远程仓库抓取
 git pull origin branch-name  也可以使用git pull   但是前提是要将本地分支与远程分支建立连接
 22.将本地分支与远程分支建立连接
